@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from .models import Student, Teacher
+from .models import Student, Teacher,Book_agg
 from django.db import connection
-from django.db.models import Q
-
+from django.db.models import Q,Sum,Max,Min,Avg
 # Part 2
 #################################################################
 
@@ -102,5 +101,11 @@ def student_list_bypass_orm(request):
     cursor.execute("select count(*) from student_student")
     r=cursor.fetchone()
     print(r)
+
+def  book_agg(request):
+    rating_count= Book_agg.objects.aggregate(Sum("ratings_count"))
+    print(rating_count)
+    avg = Book_agg.objects.all().aggregate(Avg('average_rating'))
+    # round(avg["average_rating__avg"],0)
 
 
